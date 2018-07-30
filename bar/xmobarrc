@@ -1,0 +1,89 @@
+Config { 
+
+  -- appearance
+    font =         "xft:Ubuntu:size=12:antialias=true,FontAwesome:size=12"
+  , bgColor =      "#1f1f1f"
+  , fgColor =      "#f6f6f6"
+  , position =     Top
+
+  -- layout
+  , sepChar =  "%"   -- delineator between plugin names and straight text
+  , alignSep = "}{"  -- separator between left-right alignment
+  , template = " %StdinReader% }{   %coretemp%   <fc=#f71b88>%mem%</fc> MiB %memory%   Swap <fc=#f71b88>%swap%</fc> MiB   %multicpu%   %dynnetwork%    <fc=#98e752>%date%</fc>  %day%  <fc=#98e752>%time%</fc>    %kbd% "
+
+  -- general behavior
+  , lowerOnStart =     True    -- send to bottom of window stack on start
+  , hideOnStart =      False   -- start with window unmapped (hidden)
+  , allDesktops =      True    -- show on all desktops
+  , overrideRedirect = True    -- set the Override Redirect flag (Xlib)
+  , pickBroadest =     False   -- choose widest display (multi-monitor)
+  , persistent =       True    -- enable/disable hiding (True = disabled)
+
+   -- plugins
+   --   Numbers can be automatically colored according to their value. xmobar
+   --   decides color based on a three-tier/two-cutoff system, controlled by
+   --   command options:
+   --     --Low sets the low cutoff
+   --     --High sets the high cutoff
+   --
+   --     --low sets the color below --Low cutoff
+   --     --normal sets the color between --Low and --High cutoffs
+   --     --High sets the color above --High cutoff
+   --
+   --   The --template option controls how the plugin is displayed. Text
+   --   color can be set by enclosing in <fc></fc> tags. For more details
+   --   see http://projects.haskell.org/xmobar/#system-monitor-plugins.
+  , commands = 
+
+	-- network activity monitor (dynamic interface resolution)
+	[ Run DynNetwork     [ "--template" , "<dev> <tx>-<rx> kB/s"
+			     , "--Low"      , "100000"       -- units: B/s
+			     , "--High"     , "1000000"       -- units: B/s
+			     , "--low"      , "#00CB00"
+			     , "--normal"   , "#00CB00"
+			     , "--high"     , "#00CB00"
+			     ] 15
+
+	-- cpu activity monitor
+	, Run MultiCpu       [ "--template" , "<total0>-<total1>-<total2>-<total3>%"
+			     , "--Low"      , "50"         -- units: %
+			     , "--High"     , "85"         -- units: %
+			     , "--low"      , "#19c7f7"
+			     , "--normal"   , "#19c7f7"
+			     , "--high"     , "red"
+			     ] 15
+
+	-- cpu core temperature monitor
+	, Run CoreTemp       [ "--template" , "<core0>-<core1>-<core2>-<core3>°C"
+			     , "--Low"      , "28"        -- units: °C
+			     , "--High"     , "50"        -- units: °C
+			     , "--low"      , "orange"
+			     , "--normal"   , "orange"
+			     , "--high"     , "red"
+			     ] 50
+			  
+	-- memory usage monitor
+	, Run Memory         [ "--template" ,"<usedratio>%"
+			     , "--Low"      , "30"        -- units: %
+			     , "--High"     , "80"        -- units: %
+			     , "--low"      , "#f71b88"
+			     , "--normal"   , "#f71b88"
+			     , "--high"     , "red"
+			     ] 15
+  , Run Com "xmo-de/bar/usedmem" ["&"] "mem" 15
+  , Run Com "xmo-de/bar/usedswap" ["&"] "swap" 15
+
+	-- time and date indicator 
+	--   (%F = y-m-d date, %a = day of week, %T = h:m:s time)
+	, Run Date           "%F" "date" 10
+  , Run Date           "%a %b" "day" 10
+  , Run Date           "%H.%M.%S" "time" 9
+  , Run StdinReader
+
+  -- keyboard layout indicator
+  , Run Kbd            [ ("us(dvorak)" , "<fc=#0000CB>DV</fc>")
+           , ("us"         , "<fc=#CB0000>US</fc>")
+           , ("fr"         , "<fc=#00CB00>FR</fc>")
+           ]
+  ]
+  }

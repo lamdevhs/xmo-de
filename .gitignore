@@ -1,0 +1,9 @@
+*.hi
+*.o
+*.swp
+*.errors
+xmonad-x86_64-linux
+next_commit_msg
+/IGNORED/
+/mywpp
+Variables.hs

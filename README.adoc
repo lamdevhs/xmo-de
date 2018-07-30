@@ -1,0 +1,3 @@
+= xmo-de: my personal, custom lightweight desktop environment
+
+So to speak -- these are just my dotfiles for xmonad, xmobar and feh.
