@@ -132,7 +132,7 @@ myRooms = simpleRooms
     : Room "GIMP" (Just xK_g)
       (M.spawn "gimp")
     : Room "BOX" (Just xK_b)
-      (M.spawn $ "virtualbox")
+      (M.spawn $ My.vm)
     : Room "READ" (Just xK_r)
       (M.spawn $ My.term_ My.fictions)
     : trashRoom
@@ -177,7 +177,7 @@ withTopBar = NoFrillsDecoration.noFrillsDeco
 
 myKeys conf = Map.fromList
   ---- ORIGINAL BINDINGS
-    $ (mod,         xK_p)            +++ M.spawn "dmenu_run"
+    $ (mod,         xK_p)            +++ M.spawn My.pmenu
     : (mod,         xK_l)            +++ M.sendMessage M.NextLayout
     : (modshift,    xK_l)            +++ M.setLayout (M.layoutHook conf)
                                       -- ^ resetLayout
@@ -188,17 +188,15 @@ myKeys conf = Map.fromList
     : (modshift,    xK_q)            +++ withSecurity xK_q 3 quitXMonad
     : (mod,         xK_m)            +++ M.refresh
 
-  ---- xfce original bindings
-    : (alt,         xK_F3)           +++ M.spawn "xfce4-appfinder"
-    : (alt,         xK_F2)           +++ M.spawn "xfrun4"
-    : (0,           xK_Print)        +++ M.spawn (screenshooter "-f")
-    : (ctrlAlt,     xK_Escape)       +++ M.spawn "xfce4-session-logout"
+  ---- usual DE bindings
+    : (alt,         xK_F3)           +++ M.spawn My.allApps
+    : (0,           xK_Print)        +++ M.spawn My.screenshooter
+    : (ctrlAlt,     xK_Escape)       +++ M.spawn My.escape
 
   ---- cmus
-    : (0,     XF86.xF86XK_AudioPrev)     +++ M.spawn "cmus-remote -r"
-    : (0,     XF86.xF86XK_AudioNext)     +++ M.spawn "cmus-remote -n"
-    : (0,     XF86.xF86XK_AudioPlay)     +++ M.spawn "cmus-remote -u"
-                                             -- ^ play/pause
+    : (0,     XF86.xF86XK_AudioPrev)     +++ M.spawn My.musicPrev
+    : (0,     XF86.xF86XK_AudioNext)     +++ M.spawn My.musicNext
+    : (0,     XF86.xF86XK_AudioPlay)     +++ M.spawn My.musicPlayPause
 
   ---- WIN ACTIONS
     : (mod,         xK_k)            +++
@@ -228,8 +226,6 @@ myKeys conf = Map.fromList
     alt = mod1Mask
     modshift = mod .|. shiftMask
     ws = M.workspaces conf
-
-    screenshooter opt = "xfce4-screenshooter " <> opt
 
     restartXMonad = M.spawn $
       "if type xmonad;"
