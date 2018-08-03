@@ -103,11 +103,11 @@ myRoomKeys config = Rooms.roomsKeyMap mod myRooms
   where mod = M.modMask config
 
 webRooms
-  = Room "WEB_UNIV" (Just xK_w)
+  = Room "WEB-UNIV" (Just xK_w)
     (M.spawn $ My.browser "univ")
-  : Room "WEB_READ" (Just xK_e)
+  : Room "WEB-READ" (Just xK_e)
     (M.spawn $ My.browser "read")
-  : Room "WEB_DEV" (Just xK_z)
+  : Room "WEB-DEV" (Just xK_z)
     (M.spawn $ My.browser "dev")
   : []
 
