@@ -99,7 +99,7 @@ myConfig = Theme.mainConfig M.def
 -------------------------------------------------------
 
 myWorkspaces = Rooms.roomNames myRooms
-myRoomKeys config = Rooms.roomsKeyMap mod myRooms
+myRoomKeys config = Rooms.roomsKeyMap_goto mod myRooms
   where mod = M.modMask config
 
 webRooms
@@ -181,7 +181,11 @@ myKeys conf = Map.fromList
     : (mod,         xK_l)            +++ M.sendMessage M.NextLayout
     : (modshift,    xK_l)            +++ M.setLayout (M.layoutHook conf)
                                       -- ^ resetLayout
-    : (mod,         xK_Tab)          +++ M.windows StackSet.focusDown
+    : (mod,         xK_Tab)  
+                +++ Rooms.initRoomElse myRooms (M.windows StackSet.focusDown)
+                -- ^ if current ws is empty and is a room in first arg,
+                -- ^ launch this room's action
+                -- ^ otherwise, execute the second argument
     : (modshift,    xK_Tab)          +++ M.windows StackSet.focusUp
     : (mod,         xK_Return)       +++ M.windows StackSet.swapMaster
     : (mod,         xK_q)            +++ restartXMonad
@@ -219,6 +223,7 @@ myKeys conf = Map.fromList
     : (mod,         xK_space)        +++ CycleWS.toggleWS
     : (mod,         xK_Left)         +++ CycleWS.prevWS
     : (mod,         xK_Right)        +++ CycleWS.nextWS
+    : (mod,         xK_a)        +++ CycleWS.nextWS
     : keypadWorkspaces
   where
     mod = M.modMask conf
@@ -245,7 +250,7 @@ myKeys conf = Map.fromList
       (key, ws) <- zip numPadKeys ws
       [(mod, key) +++ M.windows (StackSet.view ws),
        (mod .|. shiftMask, key) +++ M.windows (StackSet.shift ws)]
-    myHallway = Submap.submap (Rooms.roomsKeyMap 0 myRooms)
+    myHallway = Submap.submap (Rooms.roomsKeyMap_goto 0 myRooms)
 
 --
 -------------------------------------------------------

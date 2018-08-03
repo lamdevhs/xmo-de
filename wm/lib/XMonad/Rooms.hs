@@ -4,16 +4,14 @@
 
 module XMonad.Rooms (
   Room(..),
-  withRooms,
   roomNames,
-  roomsKeyMap,
-  -- startRoom,
-  startRoomHere,
+  roomsKeyMap_open,
+  roomsKeyMap_goto,
+  initRoomElse,
   simpleRoom,
   simpleRoom',
   simpleRooms,
-  simpleRooms',
-  openRoom)
+  simpleRooms')
   where
 
 import Data.Maybe (isNothing)
@@ -30,30 +28,10 @@ import XMonad.MiscTools (currentWorkspace)
 
 data Room = Room {
   roomName :: String,
-  -- roomDir  :: String,
-  -- roomLayout :: Maybe (Layout Window),
   roomKey :: Maybe KeySym,
   roomAction :: X ()
   }
-  -- deriving (Eq, Show)
 
-withRooms :: [Room] -> XConfig l -> XConfig l
-withRooms rooms cfg = cfg {
-  workspaces = roomNames rooms,
-  -- layoutHook = withRoomLayouts rooms (layoutHook cfg),
-  keys = \c -> Map.union (roomsKeyMap (modMask cfg) rooms) (keys cfg c)
-  }
-
--- todel:
--- startRoom :: Room -> X ()
--- startRoom room = roomAction room
-
-startRoomHere :: [Room] -> X ()
-startRoomHere rooms = do
-  name <- gets (StackSet.tag . currentWorkspace)
-  case filter (\room -> name == roomName room) rooms of
-    [] -> pure ()
-    (room:_) -> roomAction room
 
 openRoom :: Room -> X ()
 openRoom room = do
@@ -65,6 +43,23 @@ openRoom room = do
   let ok = roomIsOpen && roomIsEmpty
   when ok (roomAction room)
 
+gotoRoom :: Room -> X ()
+gotoRoom room = do
+  let name = roomName room
+  windows (StackSet.greedyView name) -- try change ws/room
+
+initRoomElse :: [Room] -> X() -> X()
+initRoomElse allRooms elseAction = do
+  ws <- gets currentWorkspace
+  let roomIsEmpty = isNothing (StackSet.stack ws)
+  if roomIsEmpty
+    then do
+      let wsName = StackSet.tag ws
+      case filter (\r -> roomName r == wsName) allRooms of
+        [] -> pure () -- unrecognized workspace, do noth
+        (r:_) -> roomAction r
+    else elseAction
+
 sendToRoom :: Room -> Window -> X ()
 sendToRoom room focusedWindow = do
   windows $ StackSet.shift (roomName room)
@@ -72,7 +67,6 @@ sendToRoom room focusedWindow = do
 
 roomNames :: [Room] -> [String]
 roomNames = fmap roomName
-
 
 simpleRoom :: Show a => a -> KeySym -> Room
 simpleRoom name key = simpleRoom' (show name) key
@@ -90,8 +84,11 @@ simpleRooms' names keys = fmap
     (uncurry simpleRoom')
     (zip names keys)
 
-roomsKeyMap :: ButtonMask -> [Room] -> Map.Map (ButtonMask, KeySym) (X ())
-roomsKeyMap modmask rooms = Map.fromList (f rooms)
+roomsKeyMap_open
+  :: ButtonMask
+  -> [Room]
+  -> Map.Map (ButtonMask, KeySym) (X ())
+roomsKeyMap_open modmask rooms = Map.fromList (f rooms)
   where
     f [] = []
     f (room:rooms) = let rec = f rooms in
@@ -101,6 +98,19 @@ roomsKeyMap modmask rooms = Map.fromList (f rooms)
           ((modmask, key), openRoom room) :
           ((modmask .|. shiftMask, key), withFocused $ sendToRoom room) : rec
 
+roomsKeyMap_goto
+  :: ButtonMask
+  -> [Room]
+  -> Map.Map (ButtonMask, KeySym) (X ())
+roomsKeyMap_goto modmask rooms = Map.fromList (f rooms)
+  where
+    f [] = []
+    f (room:rooms) = let rec = f rooms in
+      case roomKey room of
+        Nothing -> rec
+        Just key ->
+          ((modmask, key), gotoRoom room) :
+          ((modmask .|. shiftMask, key), withFocused $ sendToRoom room) : rec
 
 -------------------------- Tools
 orElse :: Maybe a -> a -> a
