@@ -238,10 +238,12 @@ myKeys conf = Map.fromList
 
     restartXMonad = M.spawn $
       "if type xmonad;"
-       <> " then xmonad --recompile && xmonad --restart;"
+       <> " then pkill xmobar; xmonad --recompile && xmonad --restart;"
        <> " else xmessage xmonad not in \\$PATH: \"$PATH\";"
        <> " fi"
-    quitXMonad = M.io (Exit.exitWith Exit.ExitSuccess)
+    quitXMonad = do
+      M.spawn "pkill xmobar"
+      M.io (Exit.exitWith Exit.ExitSuccess)
     withSecurity key n action = confirm n
       -- execute the action only if the user hits `n` times `key`
       where
