@@ -9,7 +9,7 @@ Config {
   -- layout
   , sepChar =  "%"   -- delineator between plugin names and straight text
   , alignSep = "}{"  -- separator between left-right alignment
-  , template = " placeholder }{   <fc=#98e752>%date%</fc>  %day%  <fc=#98e752>%time%</fc> "
+  , template = " %cmus% }{ <fc=#98e752>%date%</fc>  %day%  <fc=#98e752>%time%</fc>  "
 
   -- general behavior
   , lowerOnStart =     True    -- send to bottom of window stack on start
@@ -37,6 +37,8 @@ Config {
 	[ Run Date           "%F" "date" 10
         , Run Date           "%a %b" "day" 10
         , Run Date           "%H.%M.%S" "time" 9
+        
+        , Run Com "xmo-de/bar/cmus-stat" ["&"] "cmus" 5
 
         , Run Kbd
            [ ("us(dvorak)" , "<fc=#0000CB>DV</fc>")

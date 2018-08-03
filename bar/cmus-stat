@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cmus-remote -Q | grep ^file \
+  | sed 's/music\//\t/' | cut -d$'\t' -f2 \
+  | sed 's/\// \/ /g' \
+  | sed 's/-/  /g' \
+  | sed 's/\./  /g'
