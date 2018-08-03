@@ -16,6 +16,7 @@ import qualified Graphics.X11.ExtraTypes.XF86 as XF86
 import qualified XMonad as M
 import XMonad ((.|.), Full(..), Mirror(..), Tall(..), (|||))
 import qualified XMonad.StackSet as StackSet
+-- import qualified XMonad.Util.Run as Run
 
 ------------------ X M O N A D - C O N T R I B
 import qualified XMonad.Hooks.DynamicLog as DL
@@ -46,16 +47,19 @@ import qualified XMonad.My.Variables as My
 -------------------------------------------------------
 
 main :: IO ()
-main = myStatusBar myConfig >>= M.xmonad
+main =
+  myStatusBar My.bottom_xmobarrc myConfig >>=
+  myStatusBar My.top_xmobarrc >>=
+  M.xmonad
 
-myStatusBar config =
+myStatusBar xmobarrc config =
     DL.statusBar
       command
       Theme.logger
       toggleStrutsKey
       config
   where
-    command = "xmobar " ++ My.xmobarrc
+    command = "xmobar " ++ xmobarrc
     toggleStrutsKey config =
       let mod = (M.modMask config) in
         (mod, xK_n)
