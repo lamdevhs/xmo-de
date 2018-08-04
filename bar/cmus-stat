@@ -1,7 +1,19 @@
 #!/bin/bash
 
-cmus-remote -Q | grep ^file \
+status=$(cmus-remote -Q | grep ^status \
+  | sed 's/status //g')
+
+case $status in
+  paused) status='' ;;
+  playing) status='' ;;
+  stopped) status='' ;;
+  *) status='?' ;;
+esac
+
+file=$(cmus-remote -Q | grep ^file \
   | sed 's/music\//\t/' | cut -d$'\t' -f2 \
   | sed 's/\// \/ /g' \
   | sed 's/-/  /g' \
-  | sed 's/\./  /g'
+  | sed 's/\./  /g')
+
+echo "  $status   $file"
