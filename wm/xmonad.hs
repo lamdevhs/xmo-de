@@ -48,9 +48,8 @@ import qualified XMonad.My.Variables as My
 
 main :: IO ()
 main =
-  myStatusBar My.bottom_xmobarrc myConfig >>=
-  myStatusBar My.top_xmobarrc >>=
-  M.xmonad
+  myStatusBar My.musicbar myConfig >>=
+  myStatusBar My.titlebar >>= M.xmonad
 
 myStatusBar xmobarrc config =
     DL.statusBar
