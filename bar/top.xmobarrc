@@ -4,7 +4,7 @@ Config {
     font =         "xft:Ubuntu:size=12:antialias=true,FontAwesome:size=12"
   , bgColor =      "#1f1f1f"
   , fgColor =      "#f6f6f6"
-  , position =     Top
+  , position =     Static { xpos = 0, ypos = 22, width = 1920, height = 22 } 
 
   -- layout
   , sepChar =  "%"   -- delineator between plugin names and straight text
