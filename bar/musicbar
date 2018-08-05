@@ -9,7 +9,7 @@ Config {
   -- layout
   , sepChar =  "%"   -- delineator between plugin names and straight text
   , alignSep = "}{"  -- separator between left-right alignment
-  , template = " <fc=#f71b88>%cmus%</fc> }{ <fc=#98e752>%date%</fc>  %day%  <fc=#98e752>%time%</fc>  "
+  , template = " <fc=orange>%cmus%</fc> }{ <fc=#98e752>%date%</fc>  %day%  <fc=#98e752>%time%</fc>  "
 
   -- general behavior
   , lowerOnStart =     True    -- send to bottom of window stack on start

@@ -10,10 +10,25 @@ case $status in
   *) status='?' ;;
 esac
 
+time_value () {
+  name=$1
+  raw=$(cmus-remote -Q | grep ^$name \
+    | sed "s/$name //g")
+  if [ $raw -lt 3600 ] ; then
+    formatted=$(date -u --date @$raw +%M:%S)
+  else
+    formatted=$(date -u --date @$raw +%H:%M:%S)
+  fi
+  echo $formatted
+}
+
+duration=`time_value duration`
+position=`time_value position`
+
 file=$(cmus-remote -Q | grep ^file \
   | sed 's/music\//\t/' | cut -d$'\t' -f2 \
   | sed 's/\// \/ /g' \
   | sed 's/-/  /g' \
   | sed 's/\./  /g')
 
-echo "  $status   $file"
+echo "  $position / $duration    $status   $file"
