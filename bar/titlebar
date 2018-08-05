@@ -9,7 +9,7 @@ Config {
   -- layout
   , sepChar =  "%"   -- delineator between plugin names and straight text
   , alignSep = "}{"  -- separator between left-right alignment
-  , template = " %StdinReader% }{   %coretemp%   <fc=#f71b88>%mem%</fc> MiB %memory%   Swap <fc=#f71b88>%swap%</fc> MiB   %multicpu%   %dynnetwork%   keys: %kbd% "
+  , template = " %kbd%  %StdinReader% }{   %coretemp%   <fc=#f71b88>%mem%</fc> MiB %memory%   Swap <fc=#f71b88>%swap%</fc> MiB   %multicpu%   %dynnetwork% "
 
   -- general behavior
   , lowerOnStart =     True    -- send to bottom of window stack on start
