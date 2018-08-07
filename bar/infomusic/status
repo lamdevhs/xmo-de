@@ -1,0 +1,17 @@
+#!/bin/bash
+
+status=$(cmus-remote -Q | grep ^status \
+  | sed 's/status //g')
+
+case $status in
+  playing) status='' ;;
+  paused) status='' ;;
+  stopped) status='' ;;
+  *) status='?' ;;
+esac
+# ^ playing/paused icons are sorta reversed bc i got used
+# to interpreting || to mean the medium is playing, and
+# |> to mean it is paused (probably due to vlc)
+
+
+echo $status

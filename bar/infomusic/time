@@ -1,0 +1,32 @@
+#!/bin/bash
+
+time_raw () {
+  name=$1
+  cmus-remote -Q | grep ^$name | sed "s/$name //g"
+}
+
+time_value () {
+  raw=`time_raw $1`
+  if [ $raw -lt 3600 ] ; then
+    formatted=$(date -u --date @$raw +%M:%S)
+  else
+    formatted=$(date -u --date @$raw +%H:%M:%S)
+  fi
+  echo $formatted
+}
+
+time_percent () {
+  val=`time_raw $1`
+  ref=`time_raw $2`
+  echo $((val * 100 / ref))
+}
+  
+
+duration=`time_value duration`
+position=`time_value position`
+percent=`time_percent position duration`
+
+echo "$percent% / $position / $duration"
+
+
+
