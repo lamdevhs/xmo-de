@@ -9,7 +9,7 @@ Config {
   -- layout
   , sepChar =  "%"   -- delineator between plugin names and straight text
   , alignSep = "}{"  -- separator between left-right alignment
-  , template = " %kbd%  %StdinReader% }{   %coretemp%   <fc=#f71b88>%mem%</fc> MiB %memory%   Swap <fc=#f71b88>%swap%</fc> MiB   %multicpu%   %dynnetwork% "
+  , template = " %kbd%  %StdinReader% }{   %coretemp%     <fc=#f71b88>%mem%</fc> MiB  %memory%     sw <fc=#f71b88>%swap%</fc> MiB     %multicpu%     %dynnetwork% "
 
   -- general behavior
   , lowerOnStart =     True    -- send to bottom of window stack on start
@@ -36,7 +36,7 @@ Config {
   , commands = 
 
 	-- network activity monitor (dynamic interface resolution)
-	[ Run DynNetwork     [ "--template" , "<dev> <tx>-<rx> kB/s"
+	[ Run DynNetwork     [ "--template" , "<tx>   <rx> kB/s  <dev>"
 			     , "--Low"      , "100000"       -- units: B/s
 			     , "--High"     , "1000000"       -- units: B/s
 			     , "--low"      , "#00CB00"
@@ -45,7 +45,7 @@ Config {
 			     ] 15
 
 	-- cpu activity monitor
-	, Run MultiCpu       [ "--template" , "<total0>-<total1>-<total2>-<total3>%"
+	, Run MultiCpu       [ "--template" , "<total0>  <total1>  <total2>  <total3>%"
 			     , "--Low"      , "50"         -- units: %
 			     , "--High"     , "85"         -- units: %
 			     , "--low"      , "#19c7f7"
@@ -54,7 +54,7 @@ Config {
 			     ] 15
 
 	-- cpu core temperature monitor
-	, Run CoreTemp       [ "--template" , "<core0>-<core1>-<core2>-<core3>°C"
+	, Run CoreTemp       [ "--template" , "<core0>  <core1>  <core2>  <core3>°C"
 			     , "--Low"      , "28"        -- units: °C
 			     , "--High"     , "50"        -- units: °C
 			     , "--low"      , "orange"
