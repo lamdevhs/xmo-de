@@ -43,13 +43,14 @@ import qualified XMonad.My.Variables as My
 
 --
 -------------------------------------------------------
--- M A I N - B A R - C O N F I G
+-- M A I N - B A R - C O N F I G - S T A R T U P
 -------------------------------------------------------
 
 main :: IO ()
 main =
-  myStatusBar My.musicbar myConfig >>=
-  myStatusBar My.titlebar >>= M.xmonad
+  myStatusBar My.titlebar myConfig >>= M.xmonad
+
+xmobar cfg = "xmobar " ++ cfg
 
 myStatusBar xmobarrc config =
     DL.statusBar
@@ -58,7 +59,7 @@ myStatusBar xmobarrc config =
       toggleStrutsKey
       config
   where
-    command = "xmobar " ++ xmobarrc
+    command = xmobar xmobarrc
     toggleStrutsKey config =
       let mod = (M.modMask config) in
         (mod, xK_n)
@@ -86,7 +87,7 @@ myConfig = Theme.mainConfig M.def
       ---- ^ The mouse bindings
       -- logHook :: !(X ())
       ---- ^ The action to perform when the windows set is changed
-      -- , startupHook = M.spawn myAutoStart
+      , M.startupHook = myStartup
       ---- ^ The action to perform on startup
       , M.focusFollowsMouse = False
       , M.clickJustFocuses = False
@@ -95,6 +96,9 @@ myConfig = Theme.mainConfig M.def
       -- rootMask :: !EventMask
       ---- ^ The root events that xmonad is interested in handleExtraArgs
       }
+
+myStartup = do
+  M.spawn (xmobar My.musicbar)
 
 --
 -------------------------------------------------------
