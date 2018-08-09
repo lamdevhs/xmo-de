@@ -237,7 +237,7 @@ myKeys conf = Map.fromList
 
     restartXMonad = M.spawn $
       "if type xmonad;"
-       <> " then pkill xmobar; xmonad --recompile && xmonad --restart;"
+       <> " then xmonad --recompile && pkill xmobar && xmonad --restart;"
        <> " else xmessage xmonad not in \\$PATH: \"$PATH\";"
        <> " fi"
     quitXMonad = do
