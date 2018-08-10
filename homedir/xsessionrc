@@ -1,1 +1,1 @@
-feh --bg-scale "$HOME/xmo-de/mywpp" &
+feh --bg-scale --no-fehbg "$HOME/xmo-de/mywpp" &
