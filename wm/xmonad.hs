@@ -110,11 +110,12 @@ myRoomKeys config = Rooms.roomsKeyMap_goto mod myRooms
   where mod = M.modMask config
 
 webRooms
-  = Room "WEB-UNIV" (Just xK_w)
+  = Room "UNIV" (Just xK_w)
     (M.spawn $ My.browser "univ")
-  : Room "WEB-READ" (Just xK_e)
-    (M.spawn $ My.browser "read")
-  : Room "WEB-DEV" (Just xK_z)
+  : Room "READ" (Just xK_f)
+    (M.spawn (My.browser "read") >>
+     M.spawn (My.term_ My.fictions))
+  : Room "DEV" (Just xK_d)
     (M.spawn $ My.browser "dev")
   : []
 
@@ -132,16 +133,12 @@ myRooms = simpleRooms
     : Room "TERMINAL" (Just xK_t)
       (M.spawn My.term >> M.spawn My.term)
     : videoRoom
-    : Room "DEV" (Just xK_d)
-      (M.spawn (My.term_ My.dev))
     : Room "CHECK" (Just xK_c)
       (M.spawn $ My.systemView)
     : Room "GIMP" (Just xK_g)
       (M.spawn "gimp")
     : Room "BOX" (Just xK_b)
       (M.spawn $ My.vm)
-    : Room "READ" (Just xK_r)
-      (M.spawn $ My.term_ My.fictions)
     : trashRoom
     : webRooms
   where
