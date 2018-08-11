@@ -167,7 +167,7 @@ myLayouts =
       withTopBar
     tiledLayouts = unnamed decorated tall
       ||| unnamed decorated (Mirror tall)
-    tall = Tall 1 (3/100) (54/100)
+    tall = Tall 1 (3/100) (50/100)
 
 named name = Renamed.renamed [(Renamed.Replace name)]
 unnamed modifier layout =
