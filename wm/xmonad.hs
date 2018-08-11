@@ -130,7 +130,7 @@ trashRoom = Room "TRASH" (Just xK_x) (pure ())
 
 myRooms :: [Room]
 myRooms = termRooms
-    ++ Room "SOUND" (Just xK_q)
+    ++ Room "MUSIC" (Just xK_q)
       (M.spawn $ My.music)
     : videoRoom
     : Room "CHECK" (Just xK_c)
