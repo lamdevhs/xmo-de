@@ -117,6 +117,8 @@ webRooms
      M.spawn (My.term_ My.fictions))
   : Room "DEV" (Just xK_d)
     (M.spawn $ My.browser "dev")
+  : Room "SHOP" (Just xK_s)
+    (M.spawn $ My.browser "shop")
   : []
 
 videoRoom = Room "VLC" (Just xK_v) action
@@ -128,7 +130,7 @@ trashRoom = Room "TRASH" (Just xK_x) (pure ())
 
 myRooms :: [Room]
 myRooms = termRooms
-    ++ Room "SOUND" (Just xK_s)
+    ++ Room "SOUND" (Just xK_q)
       (M.spawn $ My.music)
     : videoRoom
     : Room "CHECK" (Just xK_c)
