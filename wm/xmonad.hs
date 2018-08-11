@@ -127,11 +127,9 @@ videoRoom = Room "VLC" (Just xK_v) action
 trashRoom = Room "TRASH" (Just xK_x) (pure ())
 
 myRooms :: [Room]
-myRooms = simpleRooms
+myRooms = termRooms
     ++ Room "SOUND" (Just xK_s)
       (M.spawn $ My.music)
-    : Room "TERMINAL" (Just xK_t)
-      (M.spawn My.term >> M.spawn My.term)
     : videoRoom
     : Room "CHECK" (Just xK_c)
       (M.spawn $ My.systemView)
@@ -142,9 +140,16 @@ myRooms = simpleRooms
     : trashRoom
     : webRooms
   where
-    simpleRooms = Rooms.simpleRooms'
-       (fmap toEnglish [1..3])
-       [xK_ampersand, xK_eacute, xK_quotedbl]
+    termRooms = termRooms' $ zip
+      (fmap show [1..8])
+      [xK_ampersand, xK_eacute, xK_quotedbl, xK_apostrophe,
+       xK_a, xK_z, xK_e, xK_r]
+
+    termRooms' [] = []
+    termRooms' ((name,key):rest) =
+      Room name (Just key)
+        (M.spawn My.term >> M.spawn My.term)
+      : termRooms' rest
 
 --
 -------------------------------------------------------
