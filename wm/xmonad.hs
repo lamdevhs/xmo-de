@@ -195,8 +195,8 @@ myKeys conf = Map.fromList
                 -- ^ otherwise, execute the second argument
     : (modshift,    xK_Tab)          +++ M.windows StackSet.focusUp
     : (mod,         xK_Return)       +++ M.windows StackSet.swapMaster
-    : (mod,         xK_q)            +++ restartXMonad
-    : (modshift,    xK_q)            +++ withSecurity xK_q 3 quitXMonad
+    : (mod,         xK_agrave)            +++ restartXMonad
+    : (mod .|. ctrlAlt,    xK_agrave)     +++ withSecurity xK_agrave 3 quitXMonad
     : (mod,         xK_m)            +++ M.refresh
 
   ---- usual DE bindings
@@ -230,7 +230,9 @@ myKeys conf = Map.fromList
     : (mod,         xK_space)        +++ CycleWS.toggleWS
     : (mod,         xK_Left)         +++ CycleWS.prevWS
     : (mod,         xK_Right)        +++ CycleWS.nextWS
-    : (mod,         xK_a)        +++ CycleWS.nextWS
+
+    : (mod,         xK_twosuperior)   +++ CycleWS.nextWS
+    : (mod,         xK_Escape)        +++ CycleWS.prevWS
     : keypadWorkspaces
   where
     mod = M.modMask conf
