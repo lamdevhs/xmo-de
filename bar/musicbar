@@ -2,14 +2,15 @@ Config {
 
   -- appearance
     font =         "xft:Ubuntu:size=12:antialias=true,FontAwesome:size=12"
-  , bgColor =      "#4f4f4f"
+  , additionalFonts = [ "xft:Ubuntu Mono:size=14:antialias=true" ]
+  , bgColor =      "#1f1f1f"
   , fgColor =      "#f6f6f6"
   , position =     Static { xpos = 0, ypos = 0, width = 1920, height = 22 } 
 
   -- layout
   , sepChar =  "%"   -- delineator between plugin names and straight text
   , alignSep = "}{"  -- separator between left-right alignment
-  , template = " <fc=#98e752>%date%</fc>  %day%  <fc=#98e752>%time%</fc> }{ %music-file%      %music-status%     %music-time% "
+  , template = " <fc=#98e752>%date%</fc>  %day%  <fc=#98e752>%time%</fc> }{ %music-file%      <fn=1>%music-status%</fn>      %music-time% "
 
   -- general behavior
   , lowerOnStart =     True    -- send to bottom of window stack on start
