@@ -110,7 +110,7 @@ myRoomKeys config = Rooms.roomsKeyMap_goto mod myRooms
   where mod = M.modMask config
 
 webRooms
-  = Room "UNIV" (Just xK_w)
+  = Room "UNIV" (Just xK_z)
     (M.spawn $ My.browser "univ")
   : Room "READ" (Just xK_f)
     (M.spawn (My.browser "read") >>
@@ -130,7 +130,7 @@ trashRoom = Room "TRASH" (Just xK_x) (pure ())
 
 myRooms :: [Room]
 myRooms = termRooms
-    ++ Room "MUSIC" (Just xK_q)
+    ++ Room "MUSIC" (Just xK_m)
       (M.spawn $ My.music)
     : videoRoom
     : Room "CHECK" (Just xK_c)
@@ -144,8 +144,8 @@ myRooms = termRooms
   where
     termRooms = termRooms' $ zip
       (fmap show [1..8])
-      [xK_ampersand, xK_eacute, xK_quotedbl, xK_apostrophe,
-       xK_a, xK_z, xK_e, xK_r]
+      [xK_1, xK_2, xK_3, xK_4,
+       xK_q, xK_w, xK_e, xK_r]
 
     termRooms' [] = []
     termRooms' ((name,key):rest) =
@@ -199,9 +199,9 @@ myKeys conf = Map.fromList
                 -- ^ otherwise, execute the second argument
     : (modshift,    xK_Tab)          +++ M.windows StackSet.focusUp
     : (mod,         xK_Return)       +++ M.windows StackSet.swapMaster
-    : (mod,         xK_agrave)            +++ restartXMonad
-    : (mod .|. ctrlAlt,    xK_agrave)     +++ withSecurity xK_agrave 3 quitXMonad
-    : (mod,         xK_m)            +++ M.refresh
+    : (mod,         xK_0)            +++ restartXMonad
+    : (mod .|. ctrlAlt,    xK_0)     +++ withSecurity xK_0 3 quitXMonad
+    : (mod,         xK_h)            +++ M.refresh
 
   ---- usual DE bindings
     : (alt,         xK_F3)           +++ M.spawn My.allApps
@@ -209,9 +209,9 @@ myKeys conf = Map.fromList
     : (ctrlAlt,     xK_Escape)       +++ M.spawn My.escape
 
   ---- cmus
-    : (0,     XF86.xF86XK_AudioPrev)     +++ M.spawn My.musicPrev
-    : (0,     XF86.xF86XK_AudioNext)     +++ M.spawn My.musicNext
-    : (0,     XF86.xF86XK_AudioPlay)     +++ M.spawn My.musicPlayPause
+    : (mod,         xK_F6)           +++ M.spawn My.musicPrev
+    : (mod,         xK_F7)           +++ M.spawn My.musicPlayPause
+    : (mod,         xK_F8)           +++ M.spawn My.musicNext
 
   ---- WIN ACTIONS
     : (mod,         xK_k)            +++
@@ -228,14 +228,14 @@ myKeys conf = Map.fromList
     : (0,           xK_Pause)        +++ myHallway
 
   ---- LAYOUT
-    : (mod,         xK_semicolon)    +++ M.sendMessage M.Shrink
-    : (mod,         xK_colon)        +++ M.sendMessage M.Expand
+    : (mod,         xK_comma)    +++ M.sendMessage M.Shrink
+    : (mod,         xK_period)        +++ M.sendMessage M.Expand
   ---- MOVE WS
     : (mod,         xK_space)        +++ CycleWS.toggleWS
     : (mod,         xK_Left)         +++ CycleWS.prevWS
     : (mod,         xK_Right)        +++ CycleWS.nextWS
 
-    : (mod,         xK_twosuperior)   +++ CycleWS.nextWS
+    : (mod,         xK_grave)   +++ CycleWS.nextWS
     : (mod,         xK_Escape)        +++ CycleWS.prevWS
     : keypadWorkspaces
   where
