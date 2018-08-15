@@ -209,9 +209,9 @@ myKeys conf = Map.fromList
     : (ctrlAlt,     xK_Escape)       +++ M.spawn My.escape
 
   ---- cmus
-    : (mod,         xK_F6)           +++ M.spawn My.musicPrev
-    : (mod,         xK_F7)           +++ M.spawn My.musicPlayPause
-    : (mod,         xK_F8)           +++ M.spawn My.musicNext
+    : (mod,         xK_Delete)       +++ M.spawn My.musicPrev
+    : (mod,         xK_End)          +++ M.spawn My.musicPlayPause
+    : (mod,         xK_Page_Down)    +++ M.spawn My.musicNext
 
   ---- WIN ACTIONS
     : (mod,         xK_k)            +++
